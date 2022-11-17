@@ -1,14 +1,20 @@
 import { serve } from "./deps.js";
 import { grade } from "./grade.js";
-
+import { executeQuery } from "./database.js"
 const handleRequest = async (request) => {
-  console.log("im here")
-  const formData = await request.formData();
-  const code = formData.get("code");
+  if(request.method === "POST"){
+    const formData = await request.formData()
+    const code = formData.get("code");
+    console.log(code, "the codee")
+    const result = await grade(code);
 
-  const result = await grade(code);
-
-  return new Response(JSON.stringify({ result: result }));
+    return new Response(JSON.stringify({ result: result }));
+  }
+  if(request.method === "GET"){
+    const exercises = await executeQuery("SELECT * FROM exercises")
+    const ex_rows = exercises.rows
+    return new Response(JSON.stringify({ex_rows}))
+  }
 };
 
 serve(handleRequest, { port: 7777 });

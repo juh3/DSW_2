@@ -1,0 +1,19 @@
+*{
+  padding: 0;
+  margin: 0;
+}
+
+.handout__container{
+  display: flex;
+  
+  flex-direction: column;
+  flex-wrap: 1;
+  margin-left: 2rem;
+  padding-top: 2rem;
+  margin-bottom: 2rem;
+  width: 40vw;
+}
+
+h1{
+  margin-left: 1rem;
+}

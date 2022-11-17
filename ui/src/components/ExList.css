@@ -1,0 +1,28 @@
+*{
+  padding: 0;
+  margin: 0;
+}
+
+.wrapper{
+  height: 100%;
+  width: 100%;
+}
+
+ul{
+  list-style: none;
+  margin-left: 2rem;
+}
+
+.entry{
+  width: auto;
+  margin-top: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+a{
+  background-color: rgb(45, 192, 192);
+  text-decoration: none;
+  padding-left: 10px;
+  padding-right: 10px;
+}

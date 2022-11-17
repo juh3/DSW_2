@@ -1,0 +1,26 @@
+.react__form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+}
+
+button{
+  margin-top: 2rem;
+  width: 80px;
+}
+
+textarea{
+  resize: none;
+  width: 400px;
+  height: 350px;
+}
+
+h2{
+  margin-bottom: 1rem;
+}

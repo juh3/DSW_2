@@ -1,0 +1,14 @@
+---
+import ReactForm from "../components/ReactForm.jsx";
+import Layout from "../layouts/layout.astro";
+import HandOut from "../components/HandOut.jsx";
+const {id} = Astro.params
+
+---
+<Layout title = "Exercise!">
+<main>
+  <h1> Round {id} </h1>
+  <HandOut id = {id} />
+  <ReactForm client:load />
+</main>
+</Layout>

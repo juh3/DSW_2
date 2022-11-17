@@ -5,9 +5,7 @@ const handleRequest = async (request) => {
   const path = url.pathname
   const parts = path.split("/")
   console.log(url)
-  if(request.method === "POST" && parts[0] === "api"){
-    return
-  }
+  
 };
 
 serve(handleRequest, { port: 7778 });
