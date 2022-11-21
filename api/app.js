@@ -5,7 +5,6 @@ const handleRequest = async (request) => {
   if(request.method === "POST"){
     const formData = await request.formData()
     const code = formData.get("code");
-    console.log(code, "the codee")
     const result = await grade(code);
 
     return new Response(JSON.stringify({ result: result }));
