@@ -46,9 +46,9 @@ const HandOut = ({id}) => {
   const entry = data.find(entry => entry.id === parseInt(id))
   return (
     <div className='handout__container'>
-      <h2>{entry.name}</h2>
+      <h2>{entry?.name}</h2>
       <h4> Description</h4>
-      <p> {entry.description}</p>
+      <p> {entry?.description}</p>
     </div>
   )
 }

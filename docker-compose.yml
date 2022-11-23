@@ -40,6 +40,13 @@ services:
     env_file:
       - project.env
 
+  ws-ui-service:
+    build: ws-ui-service
+    image: ws-ui-service
+    restart: "no"
+    volumes:
+      - ./ws-ui-service/:/app
+
   database:
     container_name: dab-p2-database-22484db0-ff79-4454-9ccf-f0e6b5afb801
     image: postgres:14.1

@@ -1,19 +1,31 @@
-import { serve } from "./deps.js";
+import { serve,} from "./deps.js";
 import { grade } from "./grade.js";
 import { executeQuery } from "./database.js"
+import { v1 } from "https://deno.land/std@0.91.0/uuid/mod.ts";
+
+
 const handleRequest = async (request) => {
-  if(request.method === "POST"){
+  const pathname = new URL(request.url).pathname;
+  console.log("first request ? ")
+  console.log("- -- ---")
+  console.log("pathname", pathname)
+  if(request.method === "POST" && pathname === "/" ){
     const formData = await request.formData()
     const code = formData.get("code");
     const result = await grade(code);
-
     return new Response(JSON.stringify({ result: result }));
   }
-  if(request.method === "GET"){
-    const exercises = await executeQuery("SELECT * FROM exercises")
-    const ex_rows = exercises.rows
-    return new Response(JSON.stringify({ex_rows}))
-  }
-};
 
-serve(handleRequest, { port: 7777 });
+
+  if(pathname === "/api/users" && request.method === "GET"){
+    
+    console.log("api/users")
+    const user_id = v1.generate()
+    console.log("generated userid", user_id)
+    await executeQuery("INSERT INTO users (user_id) VALUES ($user_id)", { user_id: user_id})
+    
+    return new Response(JSON.stringify({user_id: user_id}))
+    }
+}
+
+serve(handleRequest,{ port: 7777 });

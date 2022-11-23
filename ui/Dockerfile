@@ -6,6 +6,4 @@ WORKDIR /app
 
 COPY . .
 
-RUN deno cache deps.js
-
 CMD [ "run", "--watch", "--allow-net", "--allow-read", "--allow-env", "--no-check", "./dist/server/entry.mjs" ]
