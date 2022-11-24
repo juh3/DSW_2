@@ -1,5 +1,5 @@
 CREATE TABLE users (
-  id UNIQUE SERIAL,
+  id SERIAL PRIMARY KEY,
   user_id TEXT NOT NULL,
   exercises_completed TEXT
 );

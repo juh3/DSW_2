@@ -8,7 +8,6 @@ const ReactExerciseList = (data) => {
 
   
   useEffect(async() => {
-    window.localStorage.clear()
     if(!window.localStorage.getItem("exerciseUserId")) {
       const response = await fetch("/api/users", { method: "GET"})
       const data = await response.json()

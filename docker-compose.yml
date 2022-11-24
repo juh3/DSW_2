@@ -46,6 +46,8 @@ services:
     restart: "no"
     volumes:
       - ./ws-ui-service/:/app
+    depends_on:
+      - api
 
   database:
     container_name: dab-p2-database-22484db0-ff79-4454-9ccf-f0e6b5afb801

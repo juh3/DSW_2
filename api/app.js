@@ -9,9 +9,15 @@ const handleRequest = async (request) => {
   console.log("first request ? ")
   console.log("- -- ---")
   console.log("pathname", pathname)
-  if(request.method === "POST" && pathname === "/" ){
+
+
+  if(request.method === "POST" && pathname === "/api" ){
+    console.log("---- in api post---- expecting form data")
     const formData = await request.formData()
-    const code = formData.get("code");
+    console.log("this is the data", formData)
+    const code = formData.get("code")
+    const user_id = await request.headers.authorization
+    console.log("---- this is the user id sent in the header", user_id)
     const result = await grade(code);
     return new Response(JSON.stringify({ result: result }));
   }
