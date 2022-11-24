@@ -2,11 +2,14 @@ import { useState } from "react"
 import "./ReactForm.css"
 const ReactForm = () => {
   const [ text, setText ] = useState("")
+
+
   const handleSubmit = async(event) => {
     event.preventDefault()
-    const response = await fetch("/api", {method: "POST", body: new URLSearchParams(new FormData(event.target)), headers: {authorization: window.localStorage.getItem("exerciseUserID")} })
+    const response = await fetch("/api", {method: "POST", body: new URLSearchParams(new FormData(event.target)), headers: {authorization: JSON.parse(window.localStorage.getItem("exerciseUserID"))} })
     const data = await response.json()
-    console.log("datar returned", data)
+    console.log("data returned", data)
+    
 
   }
   return (

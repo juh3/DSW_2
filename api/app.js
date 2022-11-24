@@ -18,20 +18,30 @@ const handleRequest = async (request) => {
     const code = formData.get("code")
     const user_id = await request.headers.authorization
     console.log("---- this is the user id sent in the header", user_id)
+    
     const result = await grade(code);
+
     return new Response(JSON.stringify({ result: result }));
   }
 
 
   if(pathname === "/api/users" && request.method === "GET"){
-    
-    console.log("api/users")
-    const user_id = v1.generate()
-    console.log("generated userid", user_id)
-    await executeQuery("INSERT INTO users (user_id) VALUES ($user_id)", { user_id: user_id})
-    
-    return new Response(JSON.stringify({user_id: user_id}))
+    console.log(request.headers)
+    let user_id = request.headers.authorization
+    console.log(request.headers.headers.accept, "--- accept")
+    console.log("--- await auth", await request.headers.authorization)
+
+    console.log("the user id from header", user_id)
+    if(!user_id){
+      console.log("api/users")
+      user_id = v1.generate()
+      console.log("generated userid", user_id)
+      await executeQuery("INSERT INTO users (user_id) VALUES ($user_id)", { user_id: user_id})
     }
+    const user = await executeQuery("SELECT * FROM users WHERE user_id = $user_id", { user_id: user_id})
+  
+    return new Response(JSON.stringify(user.rows[0]))
+  }
 }
 
 serve(handleRequest,{ port: 7777 });
