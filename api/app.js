@@ -1,47 +1,52 @@
-import { serve,} from "./deps.js";
-import { grade } from "./grade.js";
-import { executeQuery } from "./database.js"
-import { v1 } from "https://deno.land/std@0.91.0/uuid/mod.ts";
+import { serve,v1 } from './deps.js'
+// import { grade } from './grade.js'
+import { executeQuery } from './database.js'
 
+
+const gradingService = async(entry) => {
+  console.log("gradingservice function props", entry)
+  await fetch("http://grading:7779/queue", {method: 'POST', 
+   headers: {
+    'Content-Type': 'application/json',
+  },
+ body: JSON.stringify({queueEntry: entry})})
+}
 
 const handleRequest = async (request) => {
-  const pathname = new URL(request.url).pathname;
-  console.log("first request ? ")
-  console.log("- -- ---")
-  console.log("pathname", pathname)
+  const pathname = new URL(request.url).pathname
+  console.log('- -- ---')
 
-
-  if(request.method === "POST" && pathname === "/api" ){
-    console.log("---- in api post---- expecting form data")
+  if (request.method === 'POST' && pathname === '/api') {
+    console.log('---- in api post---- expecting form data')
     const formData = await request.formData()
-    console.log("this is the data", formData)
-    const code = formData.get("code")
-    const user_id = await request.headers.authorization
-    console.log("---- this is the user id sent in the header", user_id)
-    
-    const result = await grade(code);
-
-    return new Response(JSON.stringify({ result: result }));
+    const code = formData.get('code')
+    const user_id = await request.headers.get('authorization')
+    console.log("----the queue ----")
+    await gradingService({user_id, code})
+    return new Response(JSON.stringify({ result: "JEE" }))
   }
 
+  if (pathname === '/api/users' && request.method === 'GET') {
+    let user_id
 
-  if(pathname === "/api/users" && request.method === "GET"){
-    console.log(request.headers)
-    let user_id = request.headers.authorization
-    console.log(request.headers.headers.accept, "--- accept")
-    console.log("--- await auth", await request.headers.authorization)
-
-    console.log("the user id from header", user_id)
-    if(!user_id){
-      console.log("api/users")
+    if ((await request.headers.has('authorization')) === false) {
       user_id = v1.generate()
-      console.log("generated userid", user_id)
-      await executeQuery("INSERT INTO users (user_id) VALUES ($user_id)", { user_id: user_id})
+      console.log('generated userid', user_id)
+      await executeQuery(
+        'INSERT INTO users (user_id) VALUES ($user_id)',
+        { user_id: user_id }
+      )
+    } else {
+      user_id = await request.headers.get('authorization')
     }
-    const user = await executeQuery("SELECT * FROM users WHERE user_id = $user_id", { user_id: user_id})
-  
+
+    const user = await executeQuery(
+      'SELECT * FROM users WHERE user_id = $user_id',
+      { user_id: user_id }
+    )
+
     return new Response(JSON.stringify(user.rows[0]))
   }
 }
 
-serve(handleRequest,{ port: 7777 });
+serve(handleRequest, { port: 7777 })

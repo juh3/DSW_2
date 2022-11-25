@@ -44,12 +44,12 @@ services:
     env_file:
       - project.env
 
-  ws-ui-service:
-    build: ws-ui-service
-    image: ws-ui-service
+  grading:
+    build: grading
+    image: grading
     restart: "no"
     volumes:
-      - ./ws-ui-service/:/app
+      - ./grading/:/app
     depends_on:
       - api
 
